@@ -74,3 +74,9 @@ $(window).keydown(event => {
     }
 });
 ```
+
+STEP4: Validate Answer
+---
+- add a function to check with originonal board
+- clone 2d array: https://www.freecodecamp.org/news/how-to-clone-an-array-in-javascript-1d3183468f6a/
+- if answer is correct, will not allow for inputs. if the answer is incorrect background will change color
