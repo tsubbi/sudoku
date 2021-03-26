@@ -1,0 +1,29 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#sudoku {
+    display: grid;
+    grid-template-columns: repeat(9, minmax(50px, 75px));
+    // grid-template-rows: repeat(9, minmax(50px, 100px));
+    justify-content: center;
+
+    .cell {
+        border: 1px solid #ccc;
+        font-size: 2em;
+        line-height: 50px;
+        width: 100%;
+        position: relative;
+        text-align: center;
+
+        &::before {
+            content: '';
+            padding-top: 79.5%;
+            display: inline-block;
+            position: relative;
+        }
+    }
+}
+
