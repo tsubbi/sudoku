@@ -52,3 +52,25 @@ STEP 2: Create Fixed Board Puzzel
         return sudokuBoard;
     }
     ```
+STEP 3: Allow User Input
+---
+```js
+$(window).keydown(event => {
+    const statementCase = newCell.attr("data=orinal") !== "false";
+
+    // when key is pressed“
+    switch (statementCase) {
+        // key is between 1-9
+        case (event.which >= 49 && event.which <=57): 
+            const answer = String.fromCharCode(event.which);
+            newCell.html(answer);
+            break;
+        // key is backspace
+        case (event.which === 8):
+            newCell.html("");
+            break;
+        default:
+            break;
+    }
+});
+```
