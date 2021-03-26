@@ -18,21 +18,26 @@ function sudokuEngine() {
 }
 
 $(document).ready(function() {
+    randomPuzzel();
+    randerBoard();
+});
+
+function randerBoard() {
     let i = 0;
     let puzzelBoard = createPuzzel(defaultBoard);
     $("#sudoku").children().each(function() {
-        let location = findLocation($(this));
+        let p = findPosition($(this));
         // setting the border
-        if (location.y%3 === 0 && i%9>0) {
+        if (p.y%3 === 0 && i%9>0) {
             $(this).css("border-left-width", 5);
         }
-        if (location.x%3 === 0 && i > 10) {
+        if (p.x%3 === 0 && i > 10) {
             $(this).css("border-top-width", 5);
         }
 
         // display the puzzel
-        if (puzzelBoard[location.x][location.y] !== 0) {
-            $(this).html(puzzelBoard[location.x][location.y]);
+        if (puzzelBoard[p.x][p.y] !== 0) {
+            $(this).html(puzzelBoard[p.x][p.y]);
             $(this).attr("data-original", true);
             $(this).css("font-weight", "bold");
             $(this).css("color", "seagreen");
@@ -41,15 +46,15 @@ $(document).ready(function() {
         i++;
         $(this).click(inputAnswer);
     });
-});
+}
 
 // sudoku functions
 // TODO: move into sudoku engine
 function validateAnswer(cell) {
-    const location = findLocation(cell);
+    const p = findPosition(cell);
     // since getting html text is string so need to convert into int
     const answer = parseInt(cell.html());
-    return (answer === defaultBoard[location.x][location.y]);
+    return (answer === defaultBoard[p.x][p.y]);
 }
 
 // TODO: move into sudoku engine
@@ -97,7 +102,7 @@ function shuffle(upperLimit) {
 }
 
 // TODO: move to util
-function findLocation(cell) {
+function findPosition(cell) {
     let x = parseInt(cell.attr("value").substring(0, 1));
     let y = parseInt(cell.attr("value").substring(1));
 
@@ -105,6 +110,37 @@ function findLocation(cell) {
             x: x, 
             y: y
             }
+}
+// rotate matrix to left
+function rotateMatrix(matrix) {
+    const n = matrix.length;
+    const x = Math.floor(n/2);
+    const y = n-1;
+    for (let i=0; i<x; i++) {
+        for (let j=i; j<y-i; j++) {
+            const k = matrix[i][j];
+            matrix[i][j] = matrix[y-j][i];
+            matrix[y-j][i] = matrix[y-i][y-j];
+            matrix[y-i][y-j] = matrix[j][y-i];
+            matrix[j][y-i] = k;
+        }
+    }
+}
+
+// rotate the default puzzel like rubik's cube in 2d
+function randomPuzzel() {
+    let randomTimes = Math.floor((Math.random() * 10) + 1);
+    for (let r = 0; r < randomTimes; r++) {
+        rotateMatrix(defaultBoard);
+        for (let i = 0; i < 9; i++) {
+            for (let j = 0; j < 9; j++) {
+                defaultBoard[i][j] = defaultBoard[i][j] +1;
+                if (defaultBoard[i][j] === 10) {
+                    defaultBoard[i][j] = 1;
+                }
+            }
+        }
+    }
 }
 
 // user click function
